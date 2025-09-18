@@ -15,7 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: sudo docker build -t lazynews .
+      run: docker build -t lazynews .
 
   deploy:
     needs: build
@@ -23,9 +23,9 @@ jobs:
     steps:
       - name: Stop & remove old container (ignore errors)
         run: |
-          sudo docker stop lazynews || true
-          sudo docker rm lazynews || true
+          docker stop lazynews || true
+          docker rm lazynews || true
   
       - name: Run new container
         run: |
-          sudo docker run -d --name lazynews -p 3000:3000 lazynews:latest
+          docker run -d --name lazynews -p 3000:3000 lazynews:latest
