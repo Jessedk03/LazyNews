@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import "./index.css";
 import { Article } from "./http/ArticleType";
 import useMobileView from "./hooks/useMobileView";
@@ -9,6 +9,7 @@ function App() {
   const refreshPage = () => {
     window.location.reload();
   };
+
   const [articles, setArticles] = useState<Article[]>([]);
 
   useEffect(() => {
@@ -30,7 +31,7 @@ function App() {
 
   return (
     <div className={"App"}>
-      <h1 onClick={refreshPage}>Lazy&thinsp;News&nbsp;App</h1>
+      <h1 onClick={refreshPage}>News&nbsp;App</h1>
       <div className="content">
         {articles.length > 0 ? (
           articles.map((a, i) => (
@@ -82,7 +83,9 @@ function App() {
             </div>
           ))
         ) : (
-          <div>Loading...</div>
+          <div className={isMobile ? "content-title-mobile" : "content-title"}>
+            Loading...
+          </div>
         )}
       </div>
     </div>
