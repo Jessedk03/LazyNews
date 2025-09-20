@@ -18,14 +18,15 @@ jobs:
       run: docker build -t lazynews .
 
   deploy:
-    needs: build
-    runs-on: self-hosted
+    runs-on: stoppenkast
     steps:
-      - name: Stop & remove old container (ignore errors)
+      - uses: actions/checkout@v4
+      - name: Build Docker image on server
+        run: docker build -t lazynews:latest .
+      - name: Stop & remove old container
         run: |
           docker stop lazynews || true
           docker rm lazynews || true
-  
       - name: Run new container
-        run: |
-          docker run -d --name lazynews -p 3000:3000 lazynews:latest
+        run: docker run -d --name lazynews -p 3000:3000 lazynews:latest
+
