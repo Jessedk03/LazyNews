@@ -36,7 +36,7 @@ function App() {
           articles.map((a, i) => (
             <div className={"content-item"}>
               <div
-                className={isMobile ? "content-title" : "content-title-mobile"}
+                className={isMobile ? "content-title-mobile" : "content-title"}
                 key={i}
               >
                 {a.title}
@@ -44,8 +44,8 @@ function App() {
               <div
                 className={
                   isMobile
-                    ? "content-description"
-                    : "content-description-mobile"
+                    ? "content-description-mobile"
+                    : "content-description"
                 }
               >
                 {a.description}&nbsp;
@@ -55,7 +55,7 @@ function App() {
               </div>
               <div
                 className={
-                  isMobile ? "content-source" : "content-source-mobile"
+                  isMobile ? "content-source-mobile" : "content-source"
                 }
               >
                 <b>Source:&nbsp;</b>{" "}
@@ -72,7 +72,7 @@ function App() {
               </div>
               <div
                 className={
-                  isMobile ? "content-source" : "content-source-mobile"
+                  isMobile ? "content-source-mobile" : "content-source"
                 }
               >
                 <a href={a.url} target={"_blank"} rel="noreferrer noopener">
