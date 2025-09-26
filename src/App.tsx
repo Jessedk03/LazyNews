@@ -43,7 +43,7 @@ function App() {
               </div>
               <div className={"content-source"}>
                 <b>Source:&nbsp;</b>{" "}
-                <a href={a.source.url} target={"_blank"}>
+                <a href={a.source.url} target={"_blank"} rel="noreferrer">
                   {a.source.url}
                 </a>
                 &nbsp;
@@ -51,7 +51,7 @@ function App() {
                 {a.source.name}
               </div>
               <div className={"content-source"}>
-                <a href={a.url} target={"_blank"}>
+                <a href={a.url} target={"_blank"} rel="noreferrer">
                   Read original article
                 </a>
               </div>
