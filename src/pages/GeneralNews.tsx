@@ -1,15 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getArticles } from "../http/getArticles";
 import { Article } from "../http/ArticleType";
 
 function GeneralNews() {
   const [articles, setArticles] = useState<Article[]>([]);
 
-  getArticles().then((data: any) => {
-    if (data) {
-      setArticles(data);
-    }
-  });
+  useEffect(() => {
+    getArticles().then((data: any) => {
+      if (data) {
+        setArticles(data);
+      }
+    });
+  }, []);
 
   return (
     <div className="content">
