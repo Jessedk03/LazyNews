@@ -21,7 +21,7 @@ const SLIDE_LOADERS = [
   () => import("./data/photo16.js"),
 ];
 
-const AUTOPLAY_INTERVAL_MS = 9000;
+const AUTOPLAY_INTERVAL_MS = 15000;
 
 let track;
 let dotsContainer;
@@ -103,7 +103,7 @@ function createPhotoSlide(slide, index, total) {
 
   const badge = document.createElement("span");
   badge.className = "slide-photo-badge";
-  badge.textContent = "Love Wrapped";
+  badge.textContent = slide.badge || "Love Wrapped";
 
   const captionText = document.createElement("span");
   captionText.textContent = slide.description || "";
@@ -123,7 +123,7 @@ function createPhotoSlide(slide, index, total) {
 
   const title = document.createElement("h2");
   title.className = "slide-title";
-  title.textContent = "A frame from our universe";
+  title.textContent = slide.title || "A frame from our universe";
 
   const description = document.createElement("p");
   description.className = "slide-description";
@@ -132,22 +132,38 @@ function createPhotoSlide(slide, index, total) {
 
   const metaRow = document.createElement("div");
   metaRow.className = "slide-meta-row";
+  const pills =
+    Array.isArray(slide.pills) && slide.pills.length > 0
+      ? slide.pills
+      : ["Cosmic memory", "Infinite replays"];
 
-  const meta1 = document.createElement("div");
-  meta1.className = "stat-pill";
-  meta1.textContent = "Cosmic memory";
-
-  const meta2 = document.createElement("div");
-  meta2.className = "stat-pill";
-  meta2.textContent = "Infinite replays";
-
-  metaRow.appendChild(meta1);
-  metaRow.appendChild(meta2);
+  pills.forEach((text) => {
+    if (!text) return;
+    const pill = document.createElement("div");
+    pill.className = "stat-pill";
+    pill.textContent = text;
+    metaRow.appendChild(pill);
+  });
 
   content.appendChild(kicker);
   content.appendChild(title);
   if (slide.description) {
     content.appendChild(description);
+  }
+  if (Array.isArray(slide.bullets) && slide.bullets.length > 0) {
+    const bulletsList = document.createElement("ul");
+    bulletsList.className = "slide-bullets";
+
+    slide.bullets.forEach((text) => {
+      if (!text) return;
+      const li = document.createElement("li");
+      li.textContent = text;
+      bulletsList.appendChild(li);
+    });
+
+    if (bulletsList.children.length > 0) {
+      content.appendChild(bulletsList);
+    }
   }
   content.appendChild(metaRow);
 
@@ -194,22 +210,24 @@ function createTextSlide(slide, index, total) {
 
   const metaRow = document.createElement("div");
   metaRow.className = "slide-meta-row";
+  const defaultTextPills = [
+    "Laughs shared: 1,000+",
+    "Miles traveled: countless",
+    "Most played song: our story",
+  ];
 
-  const stat1 = document.createElement("div");
-  stat1.className = "stat-pill";
-  stat1.textContent = "Laughs shared: 1,000+";
+  const textPills =
+    Array.isArray(slide.pills) && slide.pills.length > 0
+      ? slide.pills
+      : defaultTextPills;
 
-  const stat2 = document.createElement("div");
-  stat2.className = "stat-pill";
-  stat2.textContent = "Miles traveled: countless";
-
-  const stat3 = document.createElement("div");
-  stat3.className = "stat-pill";
-  stat3.textContent = "Most played song: our story";
-
-  metaRow.appendChild(stat1);
-  metaRow.appendChild(stat2);
-  metaRow.appendChild(stat3);
+  textPills.forEach((value) => {
+    if (!value) return;
+    const pill = document.createElement("div");
+    pill.className = "stat-pill";
+    pill.textContent = value;
+    metaRow.appendChild(pill);
+  });
 
   content.appendChild(kicker);
   content.appendChild(title);

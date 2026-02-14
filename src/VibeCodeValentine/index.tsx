@@ -106,8 +106,6 @@ function VibeCodeValentine() {
       <audio id="bg-music" loop>
         <source src="/music/ik-wou-dat-ik-jou-was.mp3" type="audio/mpeg" />
       </audio>
-
-      <button id="music-toggle">🔊 Music</button>
     </>
   );
 }

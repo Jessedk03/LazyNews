@@ -382,7 +382,7 @@ body {
 
 .slide-photo img {
   width: 100%;
-  height: clamp(320px, 48vh, 540px);
+  height: clamp(360px, 56vh, 600px);
   object-fit: cover;
   display: block;
 }
@@ -441,6 +441,21 @@ body {
   line-height: 1.7;
   color: var(--text-muted);
   max-width: 40rem;
+}
+
+.slide-bullets {
+  margin: 10px 0 0;
+  padding-left: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.slide-bullets li::marker {
+  color: var(--accent-2);
 }
 
 .slide-footer {
