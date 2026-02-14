@@ -1,13 +1,14 @@
 // Each entry is a function so bundlers can statically see the import path
 // while we still keep a simple array-driven loader for the browser.
 const SLIDE_LOADERS = [
-  () => import("./data/text1.js"),
   () => import("./data/photo1.js"),
   () => import("./data/photo2.js"),
   () => import("./data/photo3.js"),
+  () => import("./data/text1.js"),
   () => import("./data/photo4.js"),
   () => import("./data/photo5.js"),
   () => import("./data/photo6.js"),
+  () => import("./data/text2.js"),
   () => import("./data/photo7.js"),
   () => import("./data/photo8.js"),
   () => import("./data/photo9.js"),
@@ -18,7 +19,6 @@ const SLIDE_LOADERS = [
   () => import("./data/photo14.js"),
   () => import("./data/photo15.js"),
   () => import("./data/photo16.js"),
-  () => import("./data/text2.js"),
 ];
 
 const AUTOPLAY_INTERVAL_MS = 9000;
@@ -33,6 +33,9 @@ let nextButton;
 let musicToggle;
 let bgMusic;
 let carouselViewport;
+let musicControls;
+let musicVolumeSlider;
+let musicTimeLabel;
 
 let slides = [];
 let currentIndex = 0;
@@ -374,6 +377,44 @@ function setupNavButtons() {
 function setupMusicToggle() {
   if (!musicToggle || !bgMusic) return;
 
+  const updateMusicUI = () => {
+    if (!bgMusic) return;
+
+    const isPlaying = !bgMusic.paused && !bgMusic.ended;
+
+    if (musicControls) {
+      if (isPlaying) {
+        musicControls.classList.add("music-controls--active");
+      } else {
+        musicControls.classList.remove("music-controls--active");
+      }
+    }
+
+    if (musicTimeLabel) {
+      const seconds = bgMusic.currentTime || 0;
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60)
+        .toString()
+        .padStart(2, "0");
+      musicTimeLabel.textContent = `${mins}:${secs}`;
+    }
+  };
+
+  // Initialise volume from the slider if present.
+  if (musicVolumeSlider) {
+    const initial = parseFloat(musicVolumeSlider.value || "0.8");
+    if (!Number.isNaN(initial)) {
+      bgMusic.volume = initial;
+    }
+
+    musicVolumeSlider.addEventListener("input", () => {
+      const value = parseFloat(musicVolumeSlider.value || "0");
+      if (!Number.isNaN(value)) {
+        bgMusic.volume = Math.min(Math.max(value, 0), 1);
+      }
+    });
+  }
+
   musicToggle.addEventListener("click", async () => {
     const isActive = musicToggle.getAttribute("aria-pressed") === "true";
     const nextState = !isActive;
@@ -387,8 +428,17 @@ function setupMusicToggle() {
       }
     } catch (error) {
       console.error("Unable to toggle music", error);
+    } finally {
+      updateMusicUI();
     }
   });
+
+  bgMusic.addEventListener("play", updateMusicUI);
+  bgMusic.addEventListener("pause", updateMusicUI);
+  bgMusic.addEventListener("ended", updateMusicUI);
+  bgMusic.addEventListener("timeupdate", updateMusicUI);
+
+  updateMusicUI();
 }
 
 async function init() {
@@ -441,6 +491,9 @@ export default function startLoveWrapped() {
   nextButton = document.querySelector(".nav-next");
   musicToggle = document.querySelector(".music-toggle");
   bgMusic = document.getElementById("bg-music");
+  musicControls = document.querySelector(".music-controls");
+  musicVolumeSlider = document.querySelector(".music-volume-slider");
+  musicTimeLabel = document.getElementById("music-time-label");
   carouselViewport = document.querySelector(".carousel-viewport");
 
   if (!track || !dotsContainer || !progressFill || !slideCounterEl) {

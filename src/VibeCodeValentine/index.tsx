@@ -4,7 +4,10 @@ import "./styles.css";
 
 function VibeCodeValentine() {
   useEffect(() => {
-    startLoveWrapped();
+    const id = requestAnimationFrame(() => {
+      startLoveWrapped();
+    });
+    return () => cancelAnimationFrame(id);
   }, []);
 
   return (
@@ -26,15 +29,31 @@ function VibeCodeValentine() {
       <div className="app-shell">
         <header className="app-header">
           <div className="app-logo">Love Wrapped!</div>
-          <button
-            className="music-toggle"
-            type="button"
-            aria-pressed="false"
-            aria-label="Toggle background music"
-          >
-            <span className="music-toggle-icon">🔊</span>
-            <span className="music-toggle-label">Music</span>
-          </button>
+          <div className="music-controls">
+            <button
+              className="music-toggle"
+              type="button"
+              aria-pressed="false"
+              aria-label="Toggle background music"
+            >
+              <span className="music-toggle-icon">🔊</span>
+              <span className="music-toggle-label">Music</span>
+            </button>
+            <div className="music-volume-row" aria-hidden="true">
+              <input
+                className="music-volume-slider"
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                defaultValue="0.8"
+                aria-label="Volume"
+              />
+              <span className="music-time-label" id="music-time-label">
+                0:00
+              </span>
+            </div>
+          </div>
         </header>
 
         <main
@@ -85,9 +104,10 @@ function VibeCodeValentine() {
       </div>
 
       <audio id="bg-music" loop>
-        {/* Replace src with your own soft background track if desired */}
-        {/* <source src="media/your-track.mp3" type="audio/mpeg" /> */}
+        <source src="/music/ik-wou-dat-ik-jou-was.mp3" type="audio/mpeg" />
       </audio>
+
+      <button id="music-toggle">🔊 Music</button>
     </>
   );
 }

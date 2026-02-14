@@ -4,7 +4,7 @@ const slide = {
     "../img/a19b25d1-b28d-48e1-85ef-d377e4f14974.webp",
     import.meta.url,
   ).href,
-  description: "",
+  description: "By the Creek. fucking veel wind.",
 };
 
 export default slide;
